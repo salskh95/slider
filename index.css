@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .slider-container {
   overflow: hidden;
   background-color: aqua;
@@ -112,3 +113,42 @@
     transform: translateX(-100%);
   }
 }
+=======
+.slider-container {
+  overflow: hidden;
+  background-color: aqua;
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.slides-container {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300%;
+  height: 100%;
+  background-color: lightgreen;
+  transition: transform 0.5s ease;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.img1 {
+  background-color: blue;
+  width: 300px;
+}
+.img2 {
+  background-color: red;
+  width: 300px;
+}
+
+.img3 {
+  background-color: yellow;
+  width: 300px;
+}
+>>>>>>> 9d3c554548fe916cb7260d93b705787d66f990ae
