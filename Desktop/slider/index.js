@@ -1,69 +1,45 @@
 const slidesContainer = document.querySelector(".slides-container");
 const prevButton = document.querySelector(".prev-btn");
 const nextButton = document.querySelector(".next-btn");
-const slideWidth = slidesContainer.children[0].offsetWidth;
 let slideIndex = 0;
+let slides = slidesContainer.querySelectorAll("div");
+let activeSlide = slides[slideIndex];
 
-//startAutoCarousel();
+activeSlide.classList.add("active");
 
-prevButton.addEventListener("click", prevSlide);
-nextButton.addEventListener("click", nextSlide);
+nextButton.addEventListener("click", moveNext);
+prevButton.addEventListener("click", movePrevious);
 
-function nextSlide() {
-  if (slideIndex < slidesContainer.children.length - 1) {
-    slideIndex++;
-  } else if (slideIndex === slidesContainer.children.length - 1) {
-    const firstSlideClone = slidesContainer.children[0].cloneNode(true);
-    slidesContainer.appendChild(firstSlideClone);
-    slideIndex = slideIndex + 2;
-    slidesContainer.style.transition = "none";
-    slidesContainer.style.transform = `translateX(-${
-      slideIndex * slideWidth
-    }px)`;
-  } else {
-    slideIndex = 0;
-  }
-  slidesContainer.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+function moveNext() {
+  moveSlide("left");
 }
 
-function prevSlide() {
-  if (slideIndex > 0) {
-    slideIndex--;
-  } else if (slideIndex === 0) {
-    const lastSlideClone =
-      slidesContainer.children[slidesContainer.children.length - 1].cloneNode(
-        true
-      );
-    slidesContainer.insertBefore(lastSlideClone, slidesContainer.children[0]);
-    slidesContainer.style.transition = "none";
-    slidesContainer.style.transform = `translateX(-${slideWidth}px)`;
-    slideIndex = slidesContainer.children.length - 2;
-  } else {
-    slideIndex = slidesContainer.children.length - 1;
-  }
-  slidesContainer.style.transform = `translateX(-${slideIndex * slideWidth}px)`;
+function movePrevious() {
+  moveSlide("right");
 }
 
-// function startAutoCarousel() {
-//   autoCarouselInterval = setInterval(nextCarouselSlide, 1000);
-// }
+function moveSlide(direction) {
+  let nextIndex;
 
-// function stopAutoCarousel() {
-//   clearInterval(autoCarouselInterval);
-// }
+  if (direction === "left") {
+    nextIndex = slideIndex + 1;
+    if (nextIndex >= slides.length) {
+      nextIndex = 0;
+    }
+  } else {
+    nextIndex = slideIndex - 1;
+    if (nextIndex < 0) {
+      nextIndex = slides.length - 1;
+    }
+  }
 
-// function updateCarouselSlide() {
-//   carouselContainer.style.transform = `translateX(-${
-//     carouselIndex * carouselWidth
-//   }px)`;
-//   startAutoCarousel();
-// }
+  const nextSlide = slides[nextIndex];
 
-// function prevCarouselSlide() {
-//   if (carouselIndex > 0) {
-//     carouselIndex--;
-//   } else {
-//     carouselIndex = carouselContainer.children.length - 1;
-//   }
-//   updateCarouselSlide();
-// }
+  let slideDirection = direction === "left" ? "left" : "right";
+
+  activeSlide.classList.add(`slideout-${slideDirection}`);
+  nextSlide.classList.add("active", `slidein-${slideDirection}`);
+
+  activeSlide = nextSlide;
+  slideIndex = nextIndex;
+}
