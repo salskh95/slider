@@ -23,7 +23,7 @@
 
 .slides-container > div {
   width: 100%;
-  flex: 0 0 auto;
+  flex: 0 0 100%;
 }
 
 .img1,
@@ -34,6 +34,8 @@
   position: absolute;
   width: 300px;
   height: 100%;
+  font-size: 60px;
+  color: aliceblue;
 }
 
 .img1 {

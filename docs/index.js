@@ -4,6 +4,7 @@ const nextButton = document.querySelector(".next-btn");
 let slideIndex = 0;
 let slides = slidesContainer.querySelectorAll("div");
 let activeSlide = slides[slideIndex];
+let isTransitioning = false;
 
 activeSlide.classList.add("active");
 
@@ -19,6 +20,9 @@ function movePrevious() {
 }
 
 function moveSlide(direction) {
+  if (isTransitioning) return;
+
+  isTransitioning = true;
   let nextIndex;
 
   if (direction === "left") {
@@ -33,13 +37,23 @@ function moveSlide(direction) {
     }
   }
 
+  const currentSlide = slides[slideIndex];
   const nextSlide = slides[nextIndex];
-
   let slideDirection = direction === "left" ? "left" : "right";
 
-  activeSlide.classList.add(`slideout-${slideDirection}`);
+  currentSlide.classList.add(`slideout-${slideDirection}`);
+
   nextSlide.classList.add("active", `slidein-${slideDirection}`);
 
-  activeSlide = nextSlide;
+  setTimeout(() => {
+    currentSlide.classList.remove("active", `slideout-${slideDirection}`);
+    isTransitioning = false;
+  }, 1000);
+
+  setTimeout(() => {
+    nextSlide.classList.remove(`slidein-${slideDirection}`);
+    isTransitioning = false;
+  }, 1000);
+
   slideIndex = nextIndex;
 }
