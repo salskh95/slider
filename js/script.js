@@ -57,3 +57,28 @@ function moveSlide(direction) {
 
   slideIndex = nextIndex;
 }
+
+function moveToNextSlide() {
+  currentIndex = (currentIndex + 1) % carouselItems.length;
+  updateCarousel();
+}
+
+function startLooping() {
+  intervalId = setInterval(moveToNextSlide, 1500);
+}
+
+function stopLooping() {
+  clearInterval(intervalId);
+}
+
+startLooping();
+
+carousel.addEventListener("mouseenter", stopLooping);
+carousel.addEventListener("mouseleave", startLooping);
+
+function updateCarousel() {}
+const clone = carouselItems[0].cloneNode(true);
+carouselItems[0].parentNode.removeChild(carouselItems[0]);
+
+carousel.appendChild(clone);
+carouselItems = document.querySelectorAll(".carousel-item");
