@@ -1,10 +1,14 @@
 const slidesContainer = document.querySelector(".slides-container");
 const prevButton = document.querySelector(".prev-btn");
 const nextButton = document.querySelector(".next-btn");
+const carousel = document.querySelector(".carousel");
+let carouselItems = document.querySelectorAll(".carousel-item");
 let slideIndex = 0;
 let slides = slidesContainer.querySelectorAll("div");
 let activeSlide = slides[slideIndex];
 let isTransitioning = false;
+let currentIndex = 0;
+let intervalId;
 
 activeSlide.classList.add("active");
 
@@ -58,13 +62,13 @@ function moveSlide(direction) {
   slideIndex = nextIndex;
 }
 
+//carousel
 function moveToNextSlide() {
-  currentIndex = (currentIndex + 1) % carouselItems.length;
-  updateCarousel();
+  updateCarousel(currentIndex);
 }
 
 function startLooping() {
-  intervalId = setInterval(moveToNextSlide, 1500);
+  intervalId = setInterval(moveToNextSlide, 800);
 }
 
 function stopLooping() {
@@ -76,9 +80,23 @@ startLooping();
 carousel.addEventListener("mouseenter", stopLooping);
 carousel.addEventListener("mouseleave", startLooping);
 
-function updateCarousel() {}
-const clone = carouselItems[0].cloneNode(true);
-carouselItems[0].parentNode.removeChild(carouselItems[0]);
+function updateCarousel(index) {
+  const clone = carouselItems[index].cloneNode(true);
+  const currentItem = carouselItems[index];
+  console.log(index);
+  const nextIndex = index++;
+  const nextItem = carouselItems[nextIndex];
 
-carousel.appendChild(clone);
-carouselItems = document.querySelectorAll(".carousel-item");
+  setTimeout(() => {
+    currentItem.parentNode.removeChild(currentItem);
+    carousel.appendChild(clone);
+    nextItem.classList.add("active", "slidein-left");
+  }, 1000);
+
+  setTimeout(() => {
+    nextItem.classList.remove("slidein-left");
+    currentIndex = nextIndex;
+
+    carouselItems = document.querySelectorAll(".carousel-item");
+  }, 1000);
+}
